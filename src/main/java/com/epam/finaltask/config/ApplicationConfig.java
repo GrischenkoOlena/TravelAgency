@@ -23,12 +23,12 @@ public class ApplicationConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/").permitAll();
+                    auth.requestMatchers("/", "/api/**").permitAll();
 
                     auth.anyRequest().authenticated();
 
                 })
-                .formLogin(formLogin -> formLogin.defaultSuccessUrl("/private"))
+                .formLogin(form -> form.permitAll())
                 .build();
     }
 	
