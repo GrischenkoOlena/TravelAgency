@@ -2,23 +2,24 @@ package com.epam.finaltask.model;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "vouchers")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Voucher {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String title;
@@ -33,15 +34,13 @@ public class Voucher {
 
     private HotelType hotelType;
 
-    private VoucherStatus status;
-
     private LocalDate arrivalDate;
 
     private LocalDate evictionDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Order> orders;
 
     private boolean isHot;
 

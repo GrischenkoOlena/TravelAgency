@@ -9,16 +9,13 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface VoucherMapper {
-    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "isHot", target = "hot")
     Voucher toVoucher(VoucherDTO voucherDTO);
 
-    @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "hot", target = "isHot")
     VoucherDTO toVoucherDTO(Voucher voucher);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "isHot", target = "hot")
     void updateEntityFromDto(VoucherDTO dto, @MappingTarget Voucher entity);
 }

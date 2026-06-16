@@ -65,5 +65,13 @@ public class VoucherRestController {
                 "Voucher status is successfully changed");
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/{voucherId}/order")
+    public ResponseEntity<RemoteResponse<VoucherDTO>> orderVoucher(@PathVariable String voucherId, @RequestBody String userId){
+        VoucherDTO updateVoucher = voucherService.order(voucherId, userId);
+        RemoteResponse<VoucherDTO> response = RemoteResponse.success(List.of(updateVoucher),
+                "Voucher is successfully ordered");
+        return ResponseEntity.ok(response);
+    }
 	
 }

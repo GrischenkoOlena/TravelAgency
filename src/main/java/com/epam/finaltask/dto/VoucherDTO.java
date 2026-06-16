@@ -2,7 +2,7 @@ package com.epam.finaltask.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.List;
 
 @Data
 public class VoucherDTO {
@@ -21,13 +21,11 @@ public class VoucherDTO {
 
     private String hotelType;
 
-    private String status;
-
     private LocalDate arrivalDate;
 
     private LocalDate evictionDate;
 
-    private UUID userId;
+    private List<OrderDTO> orders;
 
     private Boolean isHot;
 
