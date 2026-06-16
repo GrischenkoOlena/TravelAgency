@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,18 @@ public class User {
 
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Voucher> vouchers;
+    @JsonManagedReference
+    private List<Order> orders;
 
     private String phoneNumber;
 
     private BigDecimal balance;
 
+    @Column(name = "account_status")
     private boolean active;
 
 }

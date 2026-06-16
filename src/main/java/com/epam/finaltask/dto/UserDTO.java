@@ -2,8 +2,6 @@ package com.epam.finaltask.dto;
 
 import java.util.List;
 
-import com.epam.finaltask.model.Voucher;
-
 import lombok.Data;
 
 @Data
@@ -17,7 +15,7 @@ public class UserDTO {
 
 	private String role;
 
-	private List<Voucher> vouchers;
+	private List<OrderDTO> orders;
 
 	private String phoneNumber;
 

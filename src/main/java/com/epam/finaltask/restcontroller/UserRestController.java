@@ -2,6 +2,7 @@ package com.epam.finaltask.restcontroller;
 
 import com.epam.finaltask.dto.RemoteResponse;
 import com.epam.finaltask.dto.UserDTO;
+import com.epam.finaltask.exception.EntityNotFoundException;
 import com.epam.finaltask.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class UserRestController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/id/{userId}")
     public ResponseEntity<RemoteResponse<UserDTO>> findUserById(@PathVariable String userId){
         UserDTO currentUser = userService.getUserById(UUID.fromString(userId));
         RemoteResponse<UserDTO> response = RemoteResponse.success(List.of(currentUser), null);
@@ -34,9 +35,14 @@ public class UserRestController {
 
     @GetMapping("/{userName}")
     public ResponseEntity<RemoteResponse<UserDTO>> findUserByName(@PathVariable String userName){
-        UserDTO currentUser = userService.getUserByUsername(userName);
-        RemoteResponse<UserDTO> response = RemoteResponse.success(List.of(currentUser), null);
-        return ResponseEntity.ok(response);
+        try {
+            UserDTO currentUser = userService.getUserByUsername(userName);
+            RemoteResponse<UserDTO> response = RemoteResponse.success(List.of(currentUser), null);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e){
+            RemoteResponse<UserDTO> response = RemoteResponse.error(null, e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PostMapping()
