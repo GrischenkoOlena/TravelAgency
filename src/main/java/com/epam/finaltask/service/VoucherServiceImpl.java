@@ -4,6 +4,8 @@ import com.epam.finaltask.dto.VoucherDTO;
 import com.epam.finaltask.exception.EntityNotFoundException;
 import com.epam.finaltask.mapper.VoucherMapper;
 import com.epam.finaltask.model.*;
+import com.epam.finaltask.repository.OrderRepository;
+import com.epam.finaltask.repository.UserRepository;
 import com.epam.finaltask.repository.VoucherRepository;
 
 import jakarta.transaction.Transactional;
@@ -19,11 +21,12 @@ public class VoucherServiceImpl implements VoucherService{
     public static final String ERROR_MESSAGE = "Voucher not found with id ";
     private final VoucherRepository voucherRepo;
     private final VoucherMapper voucherMapper;
+    private final UserRepository userRepo;
+    private final OrderRepository orderRepo;
 
     @Override
     public VoucherDTO create(VoucherDTO voucherDTO) {
         Voucher newVoucher = voucherMapper.toVoucher(voucherDTO);
-       // setNullUserForVoucher(voucherDTO, newVoucher);
         return voucherMapper.toVoucherDTO(voucherRepo.save(newVoucher));
     }
 
@@ -31,11 +34,17 @@ public class VoucherServiceImpl implements VoucherService{
     public VoucherDTO order(String id, String userId) {
         Voucher existingVoucher = voucherRepo.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException(ERROR_MESSAGE + id));
+        User existingUser = userRepo.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
-        User currentUser = new User();
-        currentUser.setId(UUID.fromString(userId));
-        //existingVoucher.setUser(currentUser);
-        Voucher updatedVoucher = voucherRepo.save(existingVoucher);
+        Order order = Order.builder()
+                .user(existingUser)
+                .voucher(existingVoucher)
+                .status(VoucherStatus.REGISTERED)
+                .build();
+        orderRepo.save(order);
+
+        Voucher updatedVoucher = voucherRepo.findById(UUID.fromString(id)).orElseThrow();
         return voucherMapper.toVoucherDTO(updatedVoucher);
     }
 
@@ -47,8 +56,6 @@ public class VoucherServiceImpl implements VoucherService{
                 .orElseThrow(() -> new EntityNotFoundException(ERROR_MESSAGE + id));
 
         voucherMapper.updateEntityFromDto(voucherDTO, existingVoucher);
-       // setNullUserForVoucher(voucherDTO, existingVoucher);
-
         return voucherMapper.toVoucherDTO(voucherRepo.save(existingVoucher));
     }
 
@@ -117,9 +124,4 @@ public class VoucherServiceImpl implements VoucherService{
                 .toList();
     }
 
-    /*private void setNullUserForVoucher(VoucherDTO voucherDTO, Voucher voucher) {
-        if (voucherDTO.getUserId() == null){
-            voucher.setUser(null);
-        }
-    }*/
 }
