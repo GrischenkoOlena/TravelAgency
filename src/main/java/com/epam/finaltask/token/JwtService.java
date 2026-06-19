@@ -2,10 +2,7 @@ package com.epam.finaltask.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,8 +17,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private long jwtExpiration;
-    private SecretKey signingKey;
+    private final long jwtExpiration;
+    private final SecretKey signingKey;
 
     public JwtService(
             @Value("${application.security.jwt.secret-key}") String rawKey,
@@ -39,7 +36,6 @@ public class JwtService {
      * Generate a brand-new token using just the username.
      */
     public String generateToken(String username) {
-        System.out.println("KEY USED TO GENERATE: " + this.signingKey.hashCode());
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
@@ -56,7 +52,6 @@ public class JwtService {
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        System.out.println("DEBUG -> username is: " + username);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
@@ -68,7 +63,6 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(signingKey)
                 .compact();
-        System.out.println("GENERATE TOKEN -> " + token);
         return token;
     }
 
@@ -82,8 +76,6 @@ public class JwtService {
     }
 
     private Claims parseToken(String token) {
-        System.out.println("PARSING TOKEN  -> " + token);
-        System.out.println("KEY USED TO PARSE: " + this.signingKey.hashCode());
         return Jwts.parser()
                 .verifyWith(signingKey)
                 .build()
