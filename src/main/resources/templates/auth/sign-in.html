@@ -24,6 +24,10 @@
         <!-- Change the link to a submit button -->
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+    <div th:if="${errorMessage}" style="color: red; margin-top: 10px;">
+        <p th:text="${errorMessage}"></p>
+    </div>
 </div>
 </body>
 </html>
