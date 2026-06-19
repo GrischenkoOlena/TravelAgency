@@ -1,9 +1,12 @@
 INSERT INTO users (id, username, password, role, phone_number, balance, account_status)
-    VALUES (RANDOM_UUID(),'admin Nik', 'adminPass', 'ADMIN', null, 0.00,true);
+    VALUES (RANDOM_UUID(),'admin Nik', '$2a$12$DYTu11Xn8X0NjzNajOTQLeQvMD7jZuGJeNpxWH.8U3QakK02nB2vK',
+            'ADMIN', null, 0.00,true);
 INSERT INTO users (id, username, password, role, phone_number, balance, account_status)
-    VALUES (RANDOM_UUID(),'manager Phil', 'pass', 'MANAGER', null, 2000.00,true);
+    VALUES (RANDOM_UUID(),'manager Phil', '$2a$12$9cjn3Tu8Cs9EvQDds/XkCO2.ln0xZnozj8rtcH/L.9dinevjBf1dO',
+            'MANAGER', null, 2000.00,true);
 INSERT INTO users (id, username, password, role, phone_number, balance, account_status)
-    VALUES ('ca2198ef-3099-45ed-a148-7daeae3cb4c0','guest', 'password', 'USER', null, 5000.00, true);
+    VALUES ('ca2198ef-3099-45ed-a148-7daeae3cb4c0','guest',
+            '$2a$10$hc0ust6BkOkGSCNemqWHC.zKgpCuEIN.Qx/2XTSYB11Qxot8bfDIS', 'USER', null, 5000.00, true);
 
 
 INSERT INTO vouchers (id, title, description, price, tour_type, transfer_type,
