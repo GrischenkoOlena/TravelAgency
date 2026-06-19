@@ -1,4 +1,4 @@
-package com.epam.finaltask.service;
+package com.epam.finaltask.service.implementation;
 
 import com.epam.finaltask.dto.VoucherDTO;
 import com.epam.finaltask.exception.EntityNotFoundException;
@@ -8,6 +8,7 @@ import com.epam.finaltask.repository.OrderRepository;
 import com.epam.finaltask.repository.UserRepository;
 import com.epam.finaltask.repository.VoucherRepository;
 
+import com.epam.finaltask.service.VoucherService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class VoucherServiceImpl implements VoucherService{
+public class VoucherServiceImpl implements VoucherService {
     public static final String ERROR_MESSAGE = "Voucher not found with id ";
     private final VoucherRepository voucherRepo;
     private final VoucherMapper voucherMapper;
