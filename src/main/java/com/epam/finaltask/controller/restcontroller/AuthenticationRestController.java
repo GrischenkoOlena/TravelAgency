@@ -1,4 +1,4 @@
-package com.epam.finaltask.restcontroller;
+package com.epam.finaltask.controller.restcontroller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
