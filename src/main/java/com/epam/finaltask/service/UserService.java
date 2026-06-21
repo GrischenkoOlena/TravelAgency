@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
-import jakarta.validation.Valid;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
