@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/orders}">orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/profile}">profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Welcome, <span th:text="${username}"> </span></h2>
+    <form th:action="@{/editProfile}" th:object="${userDTO}" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <!-- Update input to use th:field for binding -->
+            <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Enter username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" th:field="*{phoneNumber}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="balance">Balance</label>
+            <input type="number" step="10" class="form-control" id="balance" th:field="*{balance}" placeholder="0.00" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <div th:if="${errorMessage}" style="color: red; margin-top: 10px;">
+        <p th:text="${errorMessage}"></p>
+    </div>
+</div>
+</body>
+</html>
+

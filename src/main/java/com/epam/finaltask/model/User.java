@@ -1,6 +1,5 @@
 package com.epam.finaltask.model;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class User {
 
     private String phoneNumber;
 
-    private BigDecimal balance;
+    private Double balance;
 
     @Column(name = "account_status")
     private boolean active;

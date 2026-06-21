@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import com.epam.finaltask.dto.UserDTO;
+import com.epam.finaltask.dto.UserProfileDTO;
+import jakarta.validation.Valid;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
     UserDTO register(UserDTO userDTO);
-
+    void deleteUser(String userId);
     UserDTO updateUser(String username, UserDTO userDTO);
 
     UserDTO getUserByUsername(String username);
@@ -16,4 +18,10 @@ public interface UserService extends UserDetailsService {
     UserDTO getUserById(UUID id);
 
     List<UserDTO> findAll();
+
+    UserDTO payOrder(String orderId, UserDTO userDTO);
+
+    UserDTO updateProfile(String username, UserProfileDTO userProfileDTO);
+
+    UserDTO createManager(UserDTO userDTO);
 }
