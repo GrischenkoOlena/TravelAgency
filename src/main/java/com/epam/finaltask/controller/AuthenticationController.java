@@ -2,6 +2,9 @@ package com.epam.finaltask.controller;
 
 import com.epam.finaltask.auth.AuthenticationService;
 import com.epam.finaltask.auth.LoginRequest;
+import com.epam.finaltask.dto.UserDTO;
+import com.epam.finaltask.model.Role;
+import com.epam.finaltask.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/auth")
 public class AuthenticationController {
     AuthenticationService authService;
+    UserService userService;
 
-    @GetMapping("/sign-in")
+    @GetMapping("/login")
     public String showLoginPage(Model model) {
         if (!model.containsAttribute("loginRequest")) {
             model.addAttribute("loginRequest", new LoginRequest());
@@ -33,7 +37,6 @@ public class AuthenticationController {
     public String handleLogin(@ModelAttribute("loginRequest") @Valid LoginRequest loginRequest,
                               Model model, HttpServletResponse response) {
         try {
-            System.out.println("DEBUG -> LoginRequest is " + loginRequest);
             String token = authService.authenticateAndGenerateToken(loginRequest);
 
             // Package token into a secure, HTTP-only Cookie
@@ -45,14 +48,48 @@ public class AuthenticationController {
 
             response.addCookie(jwtCookie);
 
-            log.info("handle login with {}", token);
-            return "redirect:/dashboard";
+            String username = loginRequest.getUsername();
+            Role userRole = Role.valueOf(userService.getUserByUsername(username).getRole());
+
+            log.info("handle login for user {} with role {}", username, userRole);
+
+            String redirectUrl = "redirect:/";
+            switch (userRole){
+                case USER -> redirectUrl = "redirect:/dashboard";
+                case ADMIN -> redirectUrl = "redirect:/users";
+                case MANAGER -> redirectUrl = "redirect:/tours";
+            }
+            return redirectUrl;
 
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Invalid username or password");
             log.info("login with error (Invalid username or password)");
 
-            return "auth/sing-in";
+            return "auth/sign-in";
+        }
+    }
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        if (!model.containsAttribute("userDTO")) {
+            model.addAttribute("userDTO", new UserDTO());
+        }
+        return "auth/registrationForm";
+    }
+
+    @PostMapping("/register")
+    public String handleRegister(@ModelAttribute("userDTO") @Valid UserDTO userDTO, Model model) {
+        try {
+            userService.register(userDTO);
+            model.addAttribute(userDTO);
+            log.info("handle registration user {}", userDTO.getUsername());
+            return "redirect:/auth/login";
+
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            log.info("registration was failed (Invalid username or password)");
+
+            return "auth/registrationForm";
         }
     }
 
