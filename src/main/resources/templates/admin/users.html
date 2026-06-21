@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <title>Users</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+<div th:insert="~{fragments/menu :: navbar}"></div>
+
+<h1 align="center">Users</h1>
+<div class="container">
+  <form th:action="@{/addManager}" method="post" class="d-inline">
+    <button type="submit" class="btn btn-outline-success me-2">Add new manager</button>
+  </form>
+</div>
+
+<div class="container">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">#ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">Role</th>
+      <th scope="col">Phone number</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Fixed loop and columns to match the supposed properties -->
+    <tr th:each="myUser : ${users}">
+      <td th:text="${myUser.id}"></td>
+      <td th:text="${myUser.username}"></td>
+      <td th:text="${myUser.role}"></td>
+      <td th:text="${myUser.phoneNumber}"></td>
+      <td th:text="${myUser.Balance}"></td>
+      <td th:text="${myUser.active}"></td>
+      <!--<td><a th:href="@{/{id}/order(id=${voucher.id})}" class="btn btn-outline-success me-2" type="button">Order</a></td> -->
+      <td>
+        <form th:action="@{/{id}/blockedUser(id=${myUser.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-outline-success me-2"
+                  th:text="${myUser.active} ? 'Block' : 'Unblock'">
+          </button>
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/{id}/updateUser(id=${myUser.username})}" method="get" class="d-inline">
+          <button type="submit" class="btn btn-outline-success me-2">Update</button>
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/{id}/deleteUser(id=${myUser.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-outline-success me-2">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <br>
+  <div  th:if="${message}" style="color: blue; margin-top: 10px;">
+    <p th:text="${message}"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">></script>
+</body>
+</html>
