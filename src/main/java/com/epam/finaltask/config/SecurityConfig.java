@@ -32,8 +32,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/index.html", "/static/**").permitAll();
-                    auth.requestMatchers("/auth/sign-in", "/css/**", "/js/**").permitAll();
+                    auth.requestMatchers("/", "/index.html", "/error", "/cabinet").permitAll();
+                    auth.requestMatchers( "/static/**", "/css/**", "/js/**").permitAll();
                     auth.requestMatchers("/auth/login").permitAll();
 
                     auth.anyRequest().authenticated();
@@ -43,8 +43,11 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .logout(logout -> logout
-                        .logoutUrl("/perform_logout")
-                        .logoutSuccessUrl("/login?logout=true")
+                        .logoutUrl("/auth/perform_logout")
+                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .deleteCookies("JWT_TOKEN")
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
                         .permitAll()
                 )
                 .build();
