@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public void deleteUser(String userId){
-		userRepository.delete(userRepository.findById(UUID.fromString(userId)).orElseThrow());
+		userRepository.delete(userRepository.findById(UUID.fromString(userId))
+				.orElseThrow(()-> new EntityNotFoundException(String.format(ERROR_MESSAGE, userId))));
 	}
 
 	@Override
@@ -89,7 +90,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDTO payOrder(String orderId, UserDTO userDTO) {
-		Order order = orderRepository.findById(UUID.fromString(orderId)).orElseThrow();
+		Order order = orderRepository.findById(UUID.fromString(orderId))
+				.orElseThrow(()-> new EntityNotFoundException("Not found order with id " + orderId));
 
 		UUID userId = UUID.fromString(userDTO.getId());
 		User updateUser = userRepository.findById(userId)
