@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tour</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/tours}">tours</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/allOrders}">orders</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <form th:action="@{/addTour}" th:object="${voucherDTO}" method="post">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <!-- Update input to use th:field for binding -->
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Enter title" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Enter description" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" step="1" class="form-control" id="price" th:field="*{price}" placeholder="0.00" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tourType">Tour type</label>
+            <select id="tourType" th:field="*{tourType}">
+                <option value="">-- Choose a Tour type --</option>
+                <option th:each="tourTypeOpt : ${T(com.epam.finaltask.model.TourType).values()}"
+                        th:value="${tourTypeOpt}"
+                        th:text="${tourTypeOpt}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="transferType">Transfer type</label>
+            <select id="transferType" th:field="*{transferType}">
+                <option value="">-- Choose a Tour type --</option>
+                <option th:each="transferTypeOpt : ${T(com.epam.finaltask.model.TransferType).values()}"
+                        th:value="${transferTypeOpt}"
+                        th:text="${transferTypeOpt}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="hotelType">Hotel type</label>
+            <select id="hotelType" th:field="*{hotelType}">
+                <option value="">-- Choose a Tour type --</option>
+                <option th:each="hotelTypeOpt : ${T(com.epam.finaltask.model.HotelType).values()}"
+                        th:value="${hotelTypeOpt}"
+                        th:text="${hotelTypeOpt}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="arrivalDate">Arrival date</label>
+            <input type="date" class="form-control" id="arrivalDate" th:field="*{arrivalDate}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="evictionDate">Eviction date</label>
+            <input type="date" class="form-control" id="evictionDate" th:field="*{evictionDate}" required>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="hot" th:field="*{isHot}">
+            <label class="form-check-label" for="hot">Hot tour</label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <div th:if="${errorMessage}" style="color: red; margin-top: 10px;">
+        <p th:text="${errorMessage}"></p>
+    </div>
+</div>
+</body>
+</html>
+

@@ -20,4 +20,5 @@ public interface VoucherService {
     List<VoucherDTO> findAllByHotelType(HotelType hotelType);
 
     List<VoucherDTO> findAll();
+    VoucherDTO findById(String id);
 }

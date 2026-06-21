@@ -1,6 +1,8 @@
 package com.epam.finaltask.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,8 +23,10 @@ public class VoucherDTO {
 
     private String hotelType;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate arrivalDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate evictionDate;
 
     private List<OrderDTO> orders;

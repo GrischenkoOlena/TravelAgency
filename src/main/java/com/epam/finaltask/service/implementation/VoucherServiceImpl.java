@@ -125,4 +125,8 @@ public class VoucherServiceImpl implements VoucherService {
                 .toList();
     }
 
+    @Override
+    public VoucherDTO findById(String id) {
+        return voucherMapper.toVoucherDTO(voucherRepo.findById(UUID.fromString(id)).orElseThrow());
+    }
 }

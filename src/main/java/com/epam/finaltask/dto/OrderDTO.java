@@ -10,5 +10,7 @@ public class OrderDTO {
 
     private String voucherTitle;
 
+    private Double price;
+
     private String status;
 }
