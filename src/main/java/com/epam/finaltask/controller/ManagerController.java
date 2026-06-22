@@ -1,6 +1,7 @@
 package com.epam.finaltask.controller;
 
 import com.epam.finaltask.dto.VoucherDTO;
+import com.epam.finaltask.exception.UnableChangeStatusException;
 import com.epam.finaltask.service.OrderService;
 import com.epam.finaltask.service.VoucherService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.epam.finaltask.config.AppConstants.*;
 
@@ -95,8 +97,12 @@ public class ManagerController {
     }
 
     @PostMapping("/{id}/canceled")
-    public String canceledOrder(@PathVariable("id") String orderId){
-        orderService.canceledOrder(orderId);
+    public String canceledOrder(@PathVariable("id") String orderId, RedirectAttributes redirectAttributes){
+        try {
+            orderService.canceledOrder(orderId);
+        } catch (UnableChangeStatusException e) {
+            redirectAttributes.addFlashAttribute("messageError", e.getMessage());
+        }
         return "redirect:/allOrders";
     }
 
