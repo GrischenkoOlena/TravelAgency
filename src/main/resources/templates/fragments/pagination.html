@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+<nav th:fragment="pageNavigation" aria-label="Page navigation" th:if="${voucherPage.totalPages > 0}" id = "pageNavigation" >
+  <ul class="pagination">
+
+    <li class="page-item" th:classappend="${voucherPage.first} ? 'disabled'">
+      <a class="page-link" th:href="@{/?(page=${voucherPage.number - 1})}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li class="page-item"
+        th:each="pageNumber : ${#numbers.sequence(0, voucherPage.totalPages - 1)}"
+        th:classappend="${pageNumber == voucherPage.number} ? 'active'">
+      <a class="page-link"
+         th:href="@{/?(page=${pageNumber})}"
+         th:text="${pageNumber + 1}">1</a>
+    </li>
+
+    <li class="page-item" th:classappend="${voucherPage.last} ? 'disabled'">
+      <a class="page-link" th:href="@{/?(page=${voucherPage.number + 1})}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+</body>
+</html>

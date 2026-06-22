@@ -11,6 +11,8 @@ import com.epam.finaltask.repository.VoucherRepository;
 import com.epam.finaltask.service.VoucherService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -128,5 +130,11 @@ public class VoucherServiceImpl implements VoucherService {
     @Override
     public VoucherDTO findById(String id) {
         return voucherMapper.toVoucherDTO(voucherRepo.findById(UUID.fromString(id)).orElseThrow());
+    }
+
+    @Override
+    public Page<VoucherDTO> findAll(Pageable page) {
+        Page<Voucher> voucherPage = voucherRepo.findAll(page);
+        return voucherPage.map(voucherMapper::toVoucherDTO);
     }
 }

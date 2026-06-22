@@ -8,18 +8,20 @@ import com.epam.finaltask.service.UserService;
 import com.epam.finaltask.service.VoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+
+import static com.epam.finaltask.config.AppConstants.*;
 
 @Controller
 @AllArgsConstructor
@@ -29,8 +31,12 @@ public class UserController {
     OrderService orderService;
 
     @GetMapping("/dashboard")
-    public String viewDashboard(Model model){
-        model.addAttribute("vouchers", voucherService.findAll());
+    public String viewDashboard(@RequestParam(name = "page", defaultValue = PAGE_NUMBER) Integer pageNumber,
+                                @RequestParam(name = "size", defaultValue = SIZE_PAGE) Integer size,
+                                @RequestParam(name = "sort", defaultValue = DEFAULT_TOUR_SORT) String orderFields, Model model){
+        Pageable newPage = PageRequest.of(pageNumber, size, Sort.by(orderFields).descending());
+        model.addAttribute("voucherPage", voucherService.findAll(newPage));
+        //model.addAttribute("vouchers", voucherService.findAll());
         return "user/dashboard";
     }
 
