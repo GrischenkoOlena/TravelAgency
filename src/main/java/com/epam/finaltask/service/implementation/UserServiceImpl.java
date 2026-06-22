@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(()-> new EntityNotFoundException(String.format(ERROR_MESSAGE, userId)));
 
 		double newBalance = updateUser.getBalance() - order.getVoucher().getPrice();
-		if (newBalance > 0 && order.getStatus() == VoucherStatus.REGISTERED){
+		if (newBalance >= 0 && order.getStatus() == VoucherStatus.REGISTERED){
 			updateUser.setBalance(newBalance);
 			order.setStatus(VoucherStatus.PAID);
 		} else {
