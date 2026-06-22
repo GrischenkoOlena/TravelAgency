@@ -86,8 +86,8 @@ public class AuthenticationController {
             return "redirect:/auth/login";
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Invalid username or password");
-            log.info("registration was failed (Invalid username or password)");
+            model.addAttribute("errorMessage", "Invalid registration data");
+            log.info("registration was failed (Invalid registration data)");
 
             return "auth/registrationForm";
         }

@@ -6,8 +6,10 @@ import com.epam.finaltask.service.VoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @Controller
+@PreAuthorize("hasRole('MANAGER')")
 @AllArgsConstructor
 public class ManagerController {
     VoucherService voucherService;
@@ -65,9 +68,19 @@ public class ManagerController {
 
     @PostMapping("/{id}/updateTour")
     public String updateTour(@PathVariable("id") String voucherId,
-                             @ModelAttribute("voucherDTO") @Valid VoucherDTO voucherDTO){
-        voucherService.update(voucherId, voucherDTO);
-        return "redirect:/tours";
+                             @ModelAttribute("voucherDTO") @Valid VoucherDTO voucherDTO,
+                             BindingResult result, Model model){
+        if(result.hasErrors()) {
+            model.addAttribute("voucherDTO", voucherDTO);
+            String errorMessage = result.getFieldError() != null
+                    ? result.getFieldError().getDefaultMessage()
+                    : "Invalid input data";
+            model.addAttribute("errorMessage", errorMessage);
+            return "manager/updateTourForm";
+        } else {
+            voucherService.update(voucherId, voucherDTO);
+            return "redirect:/tours";
+        }
     }
 
     @PostMapping("/{id}/deleteTour")

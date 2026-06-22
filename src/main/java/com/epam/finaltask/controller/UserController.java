@@ -6,11 +6,13 @@ import com.epam.finaltask.dto.UserProfileDTO;
 import com.epam.finaltask.service.OrderService;
 import com.epam.finaltask.service.UserService;
 import com.epam.finaltask.service.VoucherService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,14 +71,26 @@ public class UserController {
         UserDTO userDTO = userService.getUserByUsername(username);
         model.addAttribute("username", username);
         model.addAttribute("userDTO", userDTO);
+        model.addAttribute("errorMessage", "");
         return "user/profileForm";
     }
 
 
     @PostMapping("/editProfile")
-    public String editProfile(@AuthenticationPrincipal UserDetails user, @ModelAttribute("userDTO") UserProfileDTO formTarget){
-        userService.updateProfile(user.getUsername(), formTarget);
-        return "redirect:/orders";
+    public String editProfile(@AuthenticationPrincipal UserDetails user,
+                              @Valid @ModelAttribute("userDTO") UserProfileDTO formTarget,
+                              BindingResult result, Model model){
+        if(result.hasErrors()) {
+            model.addAttribute("userDTO", formTarget);
+            String errorMessage = result.getFieldError() != null
+                    ? result.getFieldError().getDefaultMessage()
+                    : "Invalid input data";
+            model.addAttribute("errorMessage", errorMessage);
+            return "user/profileForm";
+        } else {
+            userService.updateProfile(user.getUsername(), formTarget);
+            return "redirect:/dashboard";
+        }
     }
 
 

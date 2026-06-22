@@ -1,5 +1,7 @@
 package com.epam.finaltask.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,10 +13,13 @@ public class VoucherDTO {
 
     private String id;
 
+    @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
+    @Positive(message = "Price must be positive")
     private Double price;
 
     private String tourType;

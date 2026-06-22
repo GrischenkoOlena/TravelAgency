@@ -6,8 +6,10 @@ import com.epam.finaltask.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 @AllArgsConstructor
 public class AdminController {
     UserService userService;
@@ -49,8 +52,8 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/blockedUser")
-    public String blockedUser(@ModelAttribute("userDTO") @Valid UserDTO userDTO, Model model){
-        userService.changeAccountStatus(userDTO);
+    public String blockedUser(@PathVariable("id") String userId){
+        userService.changeAccountStatus(userId);
         return "redirect:/users";
     }
 
@@ -64,9 +67,21 @@ public class AdminController {
 
     @PostMapping("/{id}/updateUser")
     public String updateUser(@PathVariable("id") String username,
-                             @ModelAttribute("userDTO") @Valid UserDTO userDTO){
-        userService.updateUser(username, userDTO);
-        return "redirect:/users";
+                             @ModelAttribute("userDTO") @Valid UserDTO userDTO,
+                             BindingResult result, Model model){
+        if(result.getFieldErrorCount() == 1 && result.getFieldError().getField().equals("password")){
+            userService.updateUser(username, userDTO);
+            return "redirect:/users";
+        } else {
+            model.addAttribute("userDTO", userDTO);
+            model.addAttribute("username", username);
+            String errorMessage = result.getFieldErrors().stream()
+                    .filter(error -> !error.getField().equals("password"))
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(java.util.stream.Collectors.joining(", "));
+            model.addAttribute("errorMessage", errorMessage);
+            return "admin/updateUserForm";
+        }
     }
 
     @PostMapping("/{id}/deleteUser")
