@@ -3,11 +3,16 @@ package com.epam.finaltask.controller;
 import com.epam.finaltask.dto.OrderDTO;
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
+import com.epam.finaltask.dto.VoucherDTO;
+import com.epam.finaltask.model.HotelType;
+import com.epam.finaltask.model.TourType;
+import com.epam.finaltask.model.TransferType;
 import com.epam.finaltask.service.OrderService;
 import com.epam.finaltask.service.UserService;
 import com.epam.finaltask.service.VoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,10 +38,31 @@ public class UserController {
     @GetMapping("/dashboard")
     public String viewDashboard(@RequestParam(name = "page", defaultValue = PAGE_NUMBER) Integer pageNumber,
                                 @RequestParam(name = "size", defaultValue = SIZE_PAGE) Integer size,
-                                @RequestParam(name = "sort", defaultValue = DEFAULT_TOUR_SORT) String orderFields, Model model){
-        Pageable newPage = PageRequest.of(pageNumber, size, Sort.by(orderFields).descending());
-        model.addAttribute("voucherPage", voucherService.findAll(newPage));
-        //model.addAttribute("vouchers", voucherService.findAll());
+                                @RequestParam(name = "sort", defaultValue = DEFAULT_TOUR_SORT) String sort,
+                                @RequestParam(defaultValue = "desc") String dir,
+                                @RequestParam(required = false) TourType tourType,
+                                @RequestParam(required = false) HotelType hotelType,
+                                @RequestParam(required = false) TransferType transferType,
+                                Model model){
+
+        Pageable newPage = PageRequest.of(pageNumber, size, Sort.by(Sort.Direction.fromString(dir), sort));
+        Page<VoucherDTO> result;
+        if (tourType == null && hotelType == null && transferType == null){
+            result = voucherService.findAll(newPage);
+        } else {
+            result = voucherService.search(tourType, transferType, hotelType, newPage);
+        }
+
+        model.addAttribute("voucherPage", result);
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
+        model.addAttribute("tourTypes", TourType.values());
+        model.addAttribute("hotelTypes", HotelType.values());
+        model.addAttribute("transferTypes", TransferType.values());
+        model.addAttribute("tourType", tourType);
+        model.addAttribute("hotelType", hotelType);
+        model.addAttribute("transferType", transferType);
+
         return "user/dashboard";
     }
 

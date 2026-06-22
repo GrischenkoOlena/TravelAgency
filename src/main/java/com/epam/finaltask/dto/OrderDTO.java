@@ -11,7 +11,7 @@ public class OrderDTO {
 
     private String voucherTitle;
 
-    @Positive(message = "Price must be positive")
+    @Positive(message = "{voucher.price.positive}")
     private Double price;
 
     private String status;

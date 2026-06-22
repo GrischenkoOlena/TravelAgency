@@ -137,4 +137,11 @@ public class VoucherServiceImpl implements VoucherService {
         Page<Voucher> voucherPage = voucherRepo.findAll(page);
         return voucherPage.map(voucherMapper::toVoucherDTO);
     }
+
+    @Override
+    public Page<VoucherDTO> search(TourType tourType, TransferType transferType, HotelType hotelType, Pageable page) {
+        Page<Voucher> voucherPage = voucherRepo.
+                findByCriteria(tourType, hotelType,transferType, page);
+        return voucherPage.map(voucherMapper::toVoucherDTO);
+    }
 }

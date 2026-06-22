@@ -5,6 +5,7 @@ import java.util.List;
 import com.epam.finaltask.dto.VoucherDTO;
 import com.epam.finaltask.model.HotelType;
 import com.epam.finaltask.model.TourType;
+import com.epam.finaltask.model.TransferType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +26,5 @@ public interface VoucherService {
     VoucherDTO findById(String id);
 
     Page<VoucherDTO> findAll(Pageable page);
+    Page<VoucherDTO> search(TourType tourType, TransferType transferType, HotelType hotelType, Pageable page);
 }
