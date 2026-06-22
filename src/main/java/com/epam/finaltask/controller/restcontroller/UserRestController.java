@@ -64,7 +64,8 @@ public class UserRestController {
     @PatchMapping("/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RemoteResponse<UserDTO>> changeAccountStatus(@RequestBody UserDTO userDTO){
-        UserDTO updateUser = userService.changeAccountStatus(userDTO);
+        String userId = userDTO.getId();
+        UserDTO updateUser = userService.changeAccountStatus(userId);
         RemoteResponse<UserDTO> response = RemoteResponse.success(List.of(updateUser),
                 "Status user's account is successfully changed");
         return ResponseEntity.ok(response);

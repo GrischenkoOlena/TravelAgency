@@ -61,9 +61,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO changeAccountStatus(UserDTO userDTO) {
-		UUID userId = UUID.fromString(userDTO.getId());
-		User updateUser = userRepository.findById(userId)
+	public UserDTO changeAccountStatus(String userId) {
+		User updateUser = userRepository.findById(UUID.fromString(userId))
 				.orElseThrow(()-> new EntityNotFoundException(String.format(ERROR_MESSAGE, userId)));
 		updateUser.setActive(!updateUser.isActive());
 		return userMapper.toUserDTO(userRepository.save(updateUser));
