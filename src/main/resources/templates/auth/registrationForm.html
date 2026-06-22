@@ -8,23 +8,23 @@
 </head>
 <body>
 <div class="container">
-    <h2>Register</h2>
+    <h2 th:text="#{register.header}">Register</h2>
     <form th:action="@{/auth/register}" th:object="${userDTO}" method="post">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username" th:text="#{profile.form.username}">Username</label>
             <!-- Update input to use th:field for binding -->
             <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Enter username" required>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" th:text="#{profile.form.password}">Password</label>
             <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
         </div>
         <div class="form-group">
-            <label for="phone">Phone number</label>
+            <label for="phone" th:text="#{register.phone}">Phone number</label>
             <input type="text" class="form-control" id="phone" th:field="*{phoneNumber}" placeholder="Enter phone number" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" th:text="#{register.button}">Register</button>
     </form>
 
     <div th:if="${errorMessage}" style="color: red; margin-top: 10px;">

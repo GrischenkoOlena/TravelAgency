@@ -13,31 +13,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/orders}">orders</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/orders}" th:text="#{dashboard.menu.orders}">orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/profile}">profile</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/profile}" th:text="#{dashboard.menu.profile}">profile</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<h1 align="center">Dashboard</h1>
+<h1 align="center" th:text="#{dashboard.header}">Dashboard</h1>
 
 <div class="container">
   <table class="table table-bordered">
     <thead>
     <tr>
-      <th scope="col">Voucher Title</th>
-      <th scope="col">Description</th>
-      <th scope="col">Price</th>
-      <th scope="col">Tour Type</th>
-      <th scope="col">Transfer Type</th>
-      <th scope="col">Hotel type</th>
-      <th scope="col">Arrival Date</th>
-      <th scope="col">Eviction Date</th>
-      <th scope="col">Hot</th>
+      <th scope="col" th:text="#{dashboard.table.title}">Voucher Title</th>
+      <th scope="col" th:text="#{dashboard.table.description}">Description</th>
+      <th scope="col" th:text="#{dashboard.table.price}">Price</th>
+      <th scope="col" th:text="#{dashboard.table.tourType}">Tour Type</th>
+      <th scope="col" th:text="#{dashboard.table.transfer}">Transfer Type</th>
+      <th scope="col" th:text="#{dashboard.table.hotel}">Hotel type</th>
+      <th scope="col" th:text="#{dashboard.table.arrival}">Arrival Date</th>
+      <th scope="col" th:text="#{dashboard.table.eviction}">Eviction Date</th>
+      <th scope="col" th:text="#{dashboard.table.hot}">Hot</th>
     </tr>
     </thead>
     <tbody>
@@ -55,7 +55,7 @@
       <!--<td><a th:href="@{/{id}/order(id=${voucher.id})}" class="btn btn-outline-success me-2" type="button">Order</a></td> -->
       <td>
         <form th:action="@{/{id}/order(id=${voucher.id})}" method="post" class="d-inline">
-          <button type="submit" class="btn btn-outline-success me-2">Order</button>
+          <button type="submit" class="btn btn-outline-success me-2" th:text="#{dashboard.order}">Order</button>
         </form>
       </td>
     </tr>
@@ -87,6 +87,39 @@
 
     </ul>
   </nav>
+
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label for="tourType" class="form-label" th:text="#{dashboard.filter.header.tour}">Tour type</label>
+      <select name="tourType" id="tourType" class="form-select">
+        <option value="" th:text="#{dashboard.filter.header.allTour}">All Tour types</option>
+        <option th:each="ttype : ${tourTypes}" th:value="${ttype}"
+                th:text="${ttype}" th:selected="${ttype == tourType}"></option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="hotel" class="form-label" th:text="#{dashboard.filter.header.hotel}">Hotel</label>
+      <select name="hotelType" id="hotel" class="form-select">
+        <option value="" th:text="#{dashboard.filter.header.allHotel}">All Hotel types</option>
+        <option th:each="htype : ${hotelTypes}" th:value="${htype}"
+                th:text="${htype}" th:selected="${htype == hotelType}"></option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="transfer" class="form-label" th:text="#{dashboard.filter.header.transfer}">Transfer</label>
+      <select name="transferType" id="transfer" class="form-select">
+        <option value="" th:text="#{dashboard.filter.header.allTransfer}">All Transfer types</option>
+        <option th:each="trans : ${transferTypes}" th:value="${trans}"
+                th:text="${trans}" th:selected="${trans == transferType}"></option>
+      </select>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100" th:text="#{dashboard.filter.button}">Search</button>
+    </div>
+  </form>
 
   <br>
   <div  th:if="${message}" style="color: blue; margin-top: 10px;">

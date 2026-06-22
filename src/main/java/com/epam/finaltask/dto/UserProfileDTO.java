@@ -8,17 +8,17 @@ import lombok.Data;
 
 @Data
 public class UserProfileDTO {
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @NotBlank(message = "{user.username.blank}")
+    @Size(min = 3, max = 20, message = "{user.username.size}")
     private String username;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 3, max = 20, message = "Password must be between 3 and 20 characters")
+    @NotBlank(message = "{user.password.blank}")
+    @Size(min = 3, max = 20, message = "{user.password.size}")
     private String password;
 
     private String phoneNumber;
 
-    @Min(value = 0, message = "Balance can't be negative")
+    @Min(value = 0, message = "{user.balance.negative}")
     private Double balance;
 
     public User toUser(User updateUser){

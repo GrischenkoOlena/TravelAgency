@@ -8,19 +8,30 @@
 <body>
 
 <div th:insert="~{fragments/menu :: navbar}"></div>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-    <div class="container-fluid">
-        <a class="nav-link active" aria-current="page" th:href="@{/cabinet}">cabinet</a>
-    </div>
-</nav>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" th:href="@{/cabinet}" th:text="#{index.menu}">cabinet</a>
+            </li>
+        </ul>
+
+        <div class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+            <a th:href="@{/(lang='en')}" class="nav-link d-inline p-0">English</a>
+            <span class="text-muted mx-1">/</span>
+            <a th:href="@{/(lang='ua')}" class="nav-link d-inline p-0">Ukrainian</a>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">Tour Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
+            <th scope="col" th:text="#{index.table.title}">Tour Title</th>
+            <th scope="col" th:text="#{index.table.description}">Description</th>
+            <th scope="col" th:text="#{index.table.price}">Price</th>
         </tr>
         </thead>
         <tbody>

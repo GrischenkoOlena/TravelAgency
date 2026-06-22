@@ -13,13 +13,13 @@ public class VoucherDTO {
 
     private String id;
 
-    @NotBlank(message = "Title cannot be blank")
+    @NotBlank(message = "{voucher.title.blank}")
     private String title;
 
-    @NotBlank(message = "Description cannot be blank")
+    @NotBlank(message = "{voucher.description.blank}")
     private String description;
 
-    @Positive(message = "Price must be positive")
+    @Positive(message = "{voucher.price.positive}")
     private Double price;
 
     private String tourType;
