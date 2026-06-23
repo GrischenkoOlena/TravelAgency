@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.epam.finaltask.auth.SecurityUser;
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
+import com.epam.finaltask.exception.DuplicateUserNameException;
 import com.epam.finaltask.exception.EntityNotFoundException;
 import com.epam.finaltask.exception.NotEnoughMoneyException;
 import com.epam.finaltask.mapper.UserMapper;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO register(UserDTO userDTO) {
+		if(userRepository.existsByUsername(userDTO.getUsername())){
+			throw new DuplicateUserNameException("username cannot duplicate");
+		}
 		User newUser = createNewUser(userDTO, Role.USER);
 		return userMapper.toUserDTO(userRepository.save(newUser));
 	}

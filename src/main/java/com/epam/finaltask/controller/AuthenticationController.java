@@ -92,7 +92,7 @@ public class AuthenticationController {
             return "redirect:/auth/login";
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Invalid registration data");
+            model.addAttribute("errorMessage", e.getMessage());
             log.info("registration was failed (Invalid registration data)");
 
             return "auth/registrationForm";
