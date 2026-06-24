@@ -4,6 +4,7 @@ import com.epam.finaltask.dto.OrderDTO;
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
 import com.epam.finaltask.dto.VoucherDTO;
+import com.epam.finaltask.exception.NotEnoughMoneyException;
 import com.epam.finaltask.model.HotelType;
 import com.epam.finaltask.model.TourType;
 import com.epam.finaltask.model.TransferType;
@@ -90,9 +91,13 @@ public class UserController {
     }
 
     @PostMapping("/{id}/pay")
-    public String payOrder(@PathVariable("id") String orderId, @AuthenticationPrincipal UserDetails user){
-        UserDTO userDTO = userService.getUserByUsername(user.getUsername());
-        userService.payOrder(orderId, userDTO);
+    public String payOrder(@PathVariable("id") String orderId, @AuthenticationPrincipal UserDetails user, RedirectAttributes redirectAttributes){
+        try {
+            UserDTO userDTO = userService.getUserByUsername(user.getUsername());
+            userService.payOrder(orderId, userDTO);
+        } catch (NotEnoughMoneyException e) {
+            redirectAttributes.addFlashAttribute("messageError", e.getMessage());
+        }
         return "redirect:/orders";
     }
 

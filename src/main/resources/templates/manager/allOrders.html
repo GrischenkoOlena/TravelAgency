@@ -13,27 +13,27 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/tours}">tours</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/tours}" th:text="#{orders.menu.tours}">tours</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/allOrders}">orders</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/allOrders}" th:text="#{orders.menu.orders}">orders</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<h1 align="center">Orders</h1>
+<h1 align="center" th:text="#{orders.header}">Orders</h1>
 
 <div class="container">
   <table class="table table-bordered">
     <thead>
     <tr>
       <th scope="col">#ID</th>
-      <th scope="col">Username</th>
-      <th scope="col">Tour Title</th>
-      <th scope="col">Price</th>
-      <th scope="col">Status</th>
+      <th scope="col" th:text="#{orders.table.username}">Username</th>
+      <th scope="col" th:text="#{orders.table.title}">Tour Title</th>
+      <th scope="col" th:text="#{orders.table.price}">Price</th>
+      <th scope="col" th:text="#{orders.table.status}">Status</th>
     </tr>
     </thead>
     <tbody>

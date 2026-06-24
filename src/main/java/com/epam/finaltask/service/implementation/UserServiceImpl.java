@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 			updateUser.setBalance(newBalance);
 			order.setStatus(VoucherStatus.PAID);
 		} else {
-			throw new NotEnoughMoneyException("user doesn't have enough money for buy tour");
+			throw new NotEnoughMoneyException("user doesn't have enough money for buy tour or tour has been canceled");
 		}
 		orderRepository.save(order);
 		return userMapper.toUserDTO(userRepository.save(updateUser));
