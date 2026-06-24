@@ -52,6 +52,10 @@ public class ManagerController {
 
     @PostMapping("/addTour")
     public String addNewTour(@ModelAttribute("voucherDTO") @Valid VoucherDTO voucherDTO, Model model){
+        if (checkUncorrectedDate(voucherDTO)) {
+            model.addAttribute("errorMessage", "date arrival must be earlier than date eviction");
+            return "manager/tourForm";
+        }
         try {
             voucherService.create(voucherDTO);
             model.addAttribute(voucherDTO);
@@ -104,6 +108,10 @@ public class ManagerController {
             redirectAttributes.addFlashAttribute("messageError", e.getMessage());
         }
         return "redirect:/allOrders";
+    }
+
+    private boolean checkUncorrectedDate(VoucherDTO voucherDTO){
+        return voucherDTO.getArrivalDate().isAfter(voucherDTO.getEvictionDate());
     }
 
 }
