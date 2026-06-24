@@ -23,7 +23,7 @@
   </div>
 </nav>
 
-<h1 align="center" th:text="#{dashboard.header}">Dashboard</h1>
+<h1 class="text-center" th:text="#{dashboard.header}">Dashboard</h1>
 <div class="container">
   <form th:action="@{/addTour}" method="get" class="d-inline">
     <button type="submit" class="btn btn-outline-success me-2" th:text="#{tours.button.add}">Add new tour</button>
@@ -75,7 +75,7 @@
     <ul class="pagination">
 
       <li class="page-item" th:classappend="${voucherPage.first} ? 'disabled'">
-        <a class="page-link" th:href="@{/tours?(page=${voucherPage.number - 1})}" aria-label="Previous">
+        <a class="page-link" th:href="@{/tours(page=${voucherPage.number - 1})}" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
@@ -84,12 +84,12 @@
           th:each="pageNumber : ${#numbers.sequence(0, voucherPage.totalPages - 1)}"
           th:classappend="${pageNumber == voucherPage.number} ? 'active'">
         <a class="page-link"
-           th:href="@{/tours?(page=${pageNumber})}"
+           th:href="@{/tours(page=${pageNumber})}"
            th:text="${pageNumber + 1}">1</a>
       </li>
 
       <li class="page-item" th:classappend="${voucherPage.last} ? 'disabled'">
-        <a class="page-link" th:href="@{/tours?(page=${voucherPage.number + 1})}" aria-label="Next">
+        <a class="page-link" th:href="@{/tours(page=${voucherPage.number + 1})}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
