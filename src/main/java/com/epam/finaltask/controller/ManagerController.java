@@ -95,8 +95,13 @@ public class ManagerController {
     }
 
     @PostMapping("/{id}/deleteTour")
-    public String deleteTour(@PathVariable("id") String voucherId){
-        voucherService.delete(voucherId);
+    public String deleteTour(@PathVariable("id") String voucherId, RedirectAttributes redirectAttributes){
+        try {
+            voucherService.delete(voucherId);
+        } catch (Exception e) {
+            log.warn("delete tour was failed");
+            redirectAttributes.addFlashAttribute("message", "tour with orders cannot be deleted");
+        }
         return "redirect:/tours";
     }
 

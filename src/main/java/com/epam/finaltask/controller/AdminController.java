@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -85,8 +86,14 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/deleteUser")
-    public String deleteUser(@PathVariable("id") String userId){
-        userService.deleteUser(userId);
+    public String deleteUser(@PathVariable("id") String userId, RedirectAttributes redirectAttributes){
+        try {
+            userService.deleteUser(userId);
+        } catch (Exception e) {
+            log.warn("delete user was failed");
+            redirectAttributes.addFlashAttribute("message", "user with orders cannot be deleted");
+        }
+
         return "redirect:/users";
     }
 

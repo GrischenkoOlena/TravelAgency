@@ -27,7 +27,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private List<Order> orders;
 

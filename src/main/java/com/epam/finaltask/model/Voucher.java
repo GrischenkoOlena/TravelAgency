@@ -38,7 +38,7 @@ public class Voucher {
 
     private LocalDate evictionDate;
 
-    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voucher", cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private List<Order> orders;
 
