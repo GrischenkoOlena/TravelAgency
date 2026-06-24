@@ -2,6 +2,7 @@ package com.epam.finaltask.controller;
 
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
+import com.epam.finaltask.dto.UserUpdateDTO;
 import com.epam.finaltask.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -38,7 +41,16 @@ public class AdminController {
     }
 
     @PostMapping("/addManager")
-    public String addNewManager(@ModelAttribute("userDTO") @Valid UserDTO userDTO, Model model){
+    public String addNewManager(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult result, Model model){
+        if (result.hasErrors()){
+            model.addAttribute("userDTO", userDTO);
+            String errorMessage = result.getFieldErrors().stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            model.addAttribute("errorMessage", errorMessage);
+            log.info("adding manager failed {}", errorMessage);
+            return "admin/newUserForm";
+        }
         try {
             userService.createManager(userDTO);
             model.addAttribute(userDTO);
@@ -46,8 +58,8 @@ public class AdminController {
             return "redirect:/users";
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Invalid values");
-            log.info("adding manager failed {}", e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
+            log.info("adding manager failed, cause: {}", e.getMessage());
             return "admin/newUserForm";
         }
     }
@@ -68,16 +80,15 @@ public class AdminController {
 
     @PostMapping("/{id}/updateUser")
     public String updateUser(@PathVariable("id") String username,
-                             @ModelAttribute("userDTO") @Valid UserDTO userDTO,
+                             @ModelAttribute("userDTO") @Valid UserUpdateDTO userDTO,
                              BindingResult result, Model model){
-        if(result.getFieldErrorCount() == 1 && result.getFieldError().getField().equals("password")){
+        if(!result.hasErrors()){
             userService.updateUser(username, userDTO);
             return "redirect:/users";
         } else {
             model.addAttribute("userDTO", userDTO);
             model.addAttribute("username", username);
             String errorMessage = result.getFieldErrors().stream()
-                    .filter(error -> !error.getField().equals("password"))
                     .map(error -> error.getField() + ": " + error.getDefaultMessage())
                     .collect(java.util.stream.Collectors.joining(", "));
             model.addAttribute("errorMessage", errorMessage);

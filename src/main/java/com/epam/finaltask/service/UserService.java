@@ -5,12 +5,13 @@ import java.util.UUID;
 
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
+import com.epam.finaltask.dto.UserUpdateDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
     UserDTO register(UserDTO userDTO);
     void deleteUser(String userId);
-    UserDTO updateUser(String username, UserDTO userDTO);
+    UserDTO updateUser(String username, UserUpdateDTO userDTO);
 
     UserDTO getUserByUsername(String username);
     UserDTO changeAccountStatus(String userId);

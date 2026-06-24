@@ -2,6 +2,7 @@ package com.epam.finaltask.finalTest;
 
 import com.epam.finaltask.dto.UserDTO;
 import com.epam.finaltask.dto.UserProfileDTO;
+import com.epam.finaltask.dto.UserUpdateDTO;
 import com.epam.finaltask.exception.EntityNotFoundException;
 import com.epam.finaltask.exception.NotEnoughMoneyException;
 import com.epam.finaltask.mapper.UserMapper;
@@ -47,6 +48,7 @@ class UserServiceImplTest {
     private String sampleUuidStr;
     private User sampleUser;
     private UserDTO sampleUserDto;
+    private UserUpdateDTO sampleUpdateUserDto;
 
     @BeforeEach
     void setUp() {
@@ -65,6 +67,10 @@ class UserServiceImplTest {
         sampleUserDto.setUsername("testUser");
         sampleUserDto.setPassword("plainPassword");
         sampleUserDto.setBalance(100.00);
+
+        sampleUpdateUserDto = new UserUpdateDTO();
+        sampleUpdateUserDto.setUsername("testUser");
+        sampleUpdateUserDto.setBalance(100.00);
     }
 
     @Nested
@@ -133,11 +139,10 @@ class UserServiceImplTest {
             when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(sampleUser));
             when(userRepository.save(sampleUser)).thenReturn(sampleUser);
             when(userMapper.toUserDTO(sampleUser)).thenReturn(sampleUserDto);
-
-            UserDTO result = userService.updateUser(username, sampleUserDto);
+            UserDTO result = userService.updateUser(username, sampleUpdateUserDto);
 
             assertNotNull(result);
-            verify(userMapper).updateEntityFromDTO(sampleUserDto, sampleUser);
+            verify(userMapper).updateEntityFromDTO(sampleUpdateUserDto, sampleUser);
             verify(userRepository).save(sampleUser);
         }
 
@@ -146,7 +151,7 @@ class UserServiceImplTest {
             String username = "ghostUser";
             when(userRepository.existsByUsername(username)).thenReturn(false);
 
-            assertThrows(EntityNotFoundException.class, () -> userService.updateUser(username, sampleUserDto));
+            assertThrows(EntityNotFoundException.class, () -> userService.updateUser(username, sampleUpdateUserDto));
         }
     }
 

@@ -2,6 +2,7 @@ package com.epam.finaltask.controller.restcontroller;
 
 import com.epam.finaltask.dto.RemoteResponse;
 import com.epam.finaltask.dto.UserDTO;
+import com.epam.finaltask.dto.UserUpdateDTO;
 import com.epam.finaltask.exception.EntityNotFoundException;
 import com.epam.finaltask.service.UserService;
 
@@ -54,7 +55,7 @@ public class UserRestController {
     }
 
     @PatchMapping("/{userName}")
-    public ResponseEntity<RemoteResponse<UserDTO>> updateVoucher(@PathVariable String userName, @RequestBody UserDTO userDTO){
+    public ResponseEntity<RemoteResponse<UserDTO>> updateVoucher(@PathVariable String userName, @RequestBody UserUpdateDTO userDTO){
         UserDTO updateUser = userService.updateUser(userName, userDTO);
         RemoteResponse<UserDTO> response = RemoteResponse.success(List.of(updateUser),
                 "User is successfully updated");
