@@ -1,7 +1,6 @@
 package com.epam.finaltask.mapper;
 
 import com.epam.finaltask.dto.UserDTO;
-import com.epam.finaltask.dto.UserProfileDTO;
 import com.epam.finaltask.dto.UserUpdateDTO;
 import com.epam.finaltask.model.User;
 import org.mapstruct.Mapper;
